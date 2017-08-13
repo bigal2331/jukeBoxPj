@@ -1,4 +1,7 @@
 
+SC.initialize({
+  client_id: 'fd4e76fc67798bfa742089ed619084a6'
+});
 let audio = document.getElementById("playa");  
 let list = document.getElementById("playlist");
 
@@ -98,7 +101,7 @@ btns.addEventListener('click', function(event) {
 	  }else if(btn === "stop") {		
 	  	myJukeBox.stop();	  	
 	  }else if(btn === "add") {		
-	  	btns.innerHTML += `<input id='urllocation' placeholder="Please enter the url"><button id="submit">Load</button>`;
+	  	btns.innerHTML += `<input id='urllocation' placeholder="Please enter name of the song"><button id="submit">Search</button>`;
 	  }	else if(btn === "shuf") {		
 	  	myJukeBox.shuffle();	  	
 	  }    	
