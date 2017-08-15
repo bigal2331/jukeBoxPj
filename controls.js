@@ -20,11 +20,8 @@ function JukeBox(audioObj) {
 		let song = this.songList[songIdx];
 		//if it's a SC song then stream it
 		//if not then it's local and you can just play it
-		if(this.songList.indexOf(song) > -1 && song.hasOwnProperty('id')){
-			SC.stream('/tracks/' + song.id)
-			.then(function(player){
-				player.play();
-			})
+		if(this.songList.indexOf(song) > -1 && song.hasOwnProperty('scPlayer')){
+			song.scPlayer.play();
 		}else{
 			audioObj.src = song;
 			audioObj.play();			
@@ -100,11 +97,13 @@ JukeBox.prototype.addSCSong = function(songName){
 		q: songName
 	})
 	.then(function(songObj) {
-		
-		this.load({title: songObj[0].title, id: songObj[0].id});
+			SC.stream('/tracks/' + songObj[0].id)
+			.then(function(player){
+				this.load({title: songObj[0].title, id: songObj[0].id, scPlayer: player});
+				
+			}.bind(this))
 
 	}.bind(this));
-
 		
 };
 
