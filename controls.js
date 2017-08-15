@@ -16,16 +16,25 @@ function JukeBox(audioObj) {
 	var trackNum = 0;
 	var shuffledTrack = 0;
 	this.isShuffled = false;
-	this.play = function() {
-		
-		audioObj.play();
+	this.play = function(songIdx) {
+		let song = this.songList[songIdx];
+		//if it's a SC song then stream it
+		//if not then it's local and you can just play it
+		if(this.songList.indexOf(song) > -1 && song.hasOwnProperty('id')){
+			SC.stream('/tracks/' + song.id)
+			.then(function(player){
+				player.play();
+			})
+		}else{
+			audioObj.src = song;
+			audioObj.play();			
+		}
 	};
 
 	this.load = function (songObj) {
 		this.songList.push(songObj);
 		let songId = this.songList.indexOf(songObj);
 		list.innerHTML += `<li id=${songId}>${songObj.title}</li>`;
-		// audioObj.src = songObj.permalink_url;
 		// audioObj.load();
 	};
 	
@@ -143,8 +152,8 @@ list.addEventListener('click', function(){
 
 	let song = event.target.id;
 
-	myJukeBox.audioObj.src = myJukeBox.songList[song];
-	myJukeBox.play();
+	// myJukeBox.audioObj.src = myJukeBox.songList[song];
+	myJukeBox.play(song);
 
 })
 
