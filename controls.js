@@ -12,6 +12,7 @@ function JukeBox(audioObj) {
 	this.audioObj = audioObj;
 	this.songList = [];
 	this.shuffledList;
+	this.currentplayer;
 	var trackNum = 0;
 	var shuffledTrack = 0;
 	this.isShuffled = false;
@@ -20,11 +21,11 @@ function JukeBox(audioObj) {
 		audioObj.play();
 	};
 
-	this.load = function (song) {
-		this.songList.push(song);
-		let songId = this.songList.indexOf(song);
-		list.innerHTML += `<li id=${songId}>${song}</li>`;
-		audioObj.src = song;
+	this.load = function (songObj) {
+		this.songList.push(songObj);
+		let songId = this.songList.indexOf(songObj);
+		list.innerHTML += `<li id=${songId}>${songObj.title}</li>`;
+		// audioObj.src = songObj.permalink_url;
 		// audioObj.load();
 	};
 	
@@ -80,14 +81,41 @@ function randomInt(arry) {
     }
 }
 
-// both of these don't work, why?
-// JukeBox.prototype.stop = function(audioObj){this.pause();};
-// JukeBox.prototype.stop = function(audioObj){audioObj.pause();};
+// Add method to search and load songs from SC api.
+//it's a method because you want all instances of JukeBox
+// to be able to add songs from the API.
+
+JukeBox.prototype.addSCSong = function(songName){
+
+	SC.get('/tracks', {
+		q: songName
+	})
+	.then(function(songObj) {
+		
+		this.load({title: songObj[0].title, id: songObj[0].id});
+
+	}.bind(this));
+
+		
+};
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 let myJukeBox = new JukeBox(audio);
 let btns = document.getElementById('btns');
+
 myJukeBox.load("track1.mp3");
 
 btns.addEventListener('click', function(event) {
@@ -96,7 +124,10 @@ btns.addEventListener('click', function(event) {
 	if (btn === "play") {		
 		myJukeBox.play();
 	  }else if(btn === "submit") {
-	  	myJukeBox.load(document.getElementById("urllocation").value);	
+	  	// this is where we'll pass the song name from the user and call the function
+	  	// that will look it up in sound cloud.
+	  	let songToSearch = document.getElementById("urllocation").value;
+	  	myJukeBox.addSCSong(songToSearch);
 	  	document.getElementById("urllocation").value = ""; 	 	
 	  }else if(btn === "stop") {		
 	  	myJukeBox.stop();	  	
