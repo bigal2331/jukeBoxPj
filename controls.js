@@ -4,6 +4,7 @@ SC.initialize({
 });
 let audio = document.getElementById("playa");  
 let list = document.getElementById("playlist");
+var albumArt = document.querySelector("#albumArt")
 
 
 
@@ -13,52 +14,60 @@ function JukeBox(audioObj) {
 	this.songList = [];
 	this.shuffledList;
 	this.currentplayer;
-	var trackNum = 0;
-	var shuffledTrack = 0;
+	this.currentTrackIdx = 0;
+	let shuffledTrack = 0;
 	this.isShuffled = false;
 	this.play = function(songIdx) {
 		let song = this.songList[songIdx];
-		//if it's a SC song then stream it
-		//if not then it's local and you can just play it
-		if(this.songList.indexOf(song) > -1 && song.hasOwnProperty('scPlayer')){
-			song.scPlayer.play();
+		let songImgHolder = document.getElementById('artWork');
+		this.currentTrackIdx = Number(songIdx);
+		// songImgHolder.src = song.artWorkUrl !== undefined ? song.artWorkUrl:"";
+		
+		if(!audioObj.paused && !audioObj.duration){
+			
+			if(typeof song === 'string'){
+				audioObj.src = song;
+				audioObj.play();			
+			}else{				
+				song.scPlayer.play();
+			}
+		}else if(audioObj.paused){
+			if(!song.hasOwnProperty('scPlayer')){
+				audioObj.play();
+			}else{
+				song.scPlayer.play();
+			}
 		}else{
-			audioObj.src = song;
-			audioObj.play();			
+			if(!song.hasOwnProperty('scPlayer')){
+				audioObj.play();
+			}else{
+				song.scPlayer.play();
+			}
 		}
+		
 	};
 
 	this.load = function (songObj) {
 		this.songList.push(songObj);
+					
 		let songId = this.songList.indexOf(songObj);
-		list.innerHTML += `<li id=${songId}>${songObj.title}</li>`;
-		// audioObj.load();
+		albumArt.innerHTML += `<img class="artWork" src=${songObj.artWorkUrl}>`
+		list.innerHTML += `<li id=${songId}>${songObj.title || this.songList[songId]}</li>`;
+		
 	};
 	
 }
 
-JukeBox.prototype.queue = function() {
-	this.audioObj.on('ended', function(){
-		// console.log("this is isShuffled", this.isShuffled);
-		// console.log("this is trackNum", trackNum);
-		// console.log("this is ShuffledTrackNum", this.shuffledTrack);
-		console.log('HELLO')
-
-		if(this.isShuffled){
-
-			this.audioObj.src = this.shuffledList[shuffledTrack++];
-		
-		}else{
-			
-			this.audioObj.src = this.songList[trackNum++];
-			
-		}
-	});
-
-}
 
 JukeBox.prototype.stop = function() {
-	this.audioObj.pause();
+	let currentSong = this.songList[this.currentTrackIdx];
+	
+	if(currentSong.hasOwnProperty('scPlayer')){
+
+		currentSong.scPlayer.pause();
+	}else{
+		this.audioObj.pause();
+	}
 }
 
 JukeBox.prototype.shuffle = function(){
@@ -87,6 +96,24 @@ function randomInt(arry) {
     }
 }
 
+
+
+JukeBox.prototype.queue = function() {
+	this.audioObj.on('ended', function(){
+
+		if(this.isShuffled){
+
+			this.audioObj.src = this.shuffledList[shuffledTrack++];
+		
+		}else{
+			
+			this.audioObj.src = this.songList[trackNum++];
+			
+		}
+	});
+
+}
+
 // Add method to search and load songs from SC api.
 //it's a method because you want all instances of JukeBox
 // to be able to add songs from the API.
@@ -99,62 +126,62 @@ JukeBox.prototype.addSCSong = function(songName){
 	.then(function(songObj) {
 			SC.stream('/tracks/' + songObj[0].id)
 			.then(function(player){
-				this.load({title: songObj[0].title, id: songObj[0].id, scPlayer: player});
-				
+				this.load({title: songObj[0].title, id: songObj[0].id, scPlayer: player, artWorkUrl: songObj[0].artwork_url});
 			}.bind(this))
-
-	}.bind(this));
-		
+	}.bind(this));		
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 let myJukeBox = new JukeBox(audio);
 let btns = document.getElementById('btns');
 
-myJukeBox.load("track1.mp3");
+// myJukeBox.load("track1.mp3");
 
 btns.addEventListener('click', function(event) {
 	let btn = event.target.id;
 	
-	if (btn === "play") {		
-		myJukeBox.play();
-	  }else if(btn === "submit") {
+	if (btn === "play") {
+		//the play button current causes an error
+		//because the the currentSrc is never set to anything if the 
+		if(myJukeBox.currentTrackIdx < 0){
+			
+			myJukeBox.play(0);
+		}else{
+			
+			myJukeBox.play(myJukeBox.currentTrackIdx);
+		}		
+ 	}else if(btn === "submit") {
 	  	// this is where we'll pass the song name from the user and call the function
 	  	// that will look it up in sound cloud.
 	  	let songToSearch = document.getElementById("urllocation").value;
 	  	myJukeBox.addSCSong(songToSearch);
 	  	document.getElementById("urllocation").value = ""; 	 	
-	  }else if(btn === "stop") {		
-	  	myJukeBox.stop();	  	
-	  }else if(btn === "add") {		
-	  	btns.innerHTML += `<input id='urllocation' placeholder="Please enter name of the song"><button id="submit">Search</button>`;
-	  }	else if(btn === "shuf") {		
-	  	myJukeBox.shuffle();	  	
-	  }    	
+  	}else if(btn === "stop") {		
+  		myJukeBox.stop();	  	
+  	}else if(btn === "add") {		
+  		btns.innerHTML += `<p><input id='urllocation' placeholder="Search Song"><i class="fa fa-search" aria-hidden="true" id="submit"></i> </p>`;
+  	}else if(btn === "shuf") {		
+  		myJukeBox.shuffle();	  	
+  	}else if(btn === "fwd") {
+  		myJukeBox.currentTrackIdx++;
+  		myJukeBox.stop();
+  		myJukeBox.play(myJukeBox.currentTrackIdx);	  	
+  	}else if(btn === "back") {
+  		
+	  	myJukeBox.stop();
+	  	myJukeBox.currentTrackIdx--;			  	
+  		myJukeBox.play(myJukeBox.currentTrackIdx);	  	
+  	}    	
 })
 
   
 list.addEventListener('click', function(){
 
 	let song = event.target.id;
-
+	
 	// myJukeBox.audioObj.src = myJukeBox.songList[song];
 	myJukeBox.play(song);
 
 })
-
 
 

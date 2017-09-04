@@ -1,32 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>JuKbX</title>
+	<title>BtBx</title>
 	<link rel="stylesheet" type="text/css" href="main.css">
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-	<h1>Click on the song you want to play</h1>
+<header>
+	<h1><i class="fa fa-headphones" aria-hidden="true"></i>BtBx</h1>
+</header>
+<div id="albumArt">
+		<!-- <img class="artWork" src="https://i.genius.com/eceacef6f05014fb0bcf653633d882a8f5a67334?url=http%3A%2F%2Fwww.josepvinaixa.com%2Fblog%2Fwp-content%2Fuploads%2F2017%2F01%2FLuis-Fonsi-Despacito-2017-2480x2480.jpg"> -->
+</div>
+<div id='container'>
+	
+	
 	<ol id="playlist">
 		
 	</ol>
 	<div id="btns">
-		<button id="play">Play</button>
-		<button id="stop">stop</button>	
-		<button id="shuf">Shuffle</button>	
-		<button id="add">Add a song</button>	
-		
+		<i class="fa fa-backward" aria-hidden="true" id="back"></i>
+		<i class="fa fa-play-circle" aria-hidden="true" id="play"></i> 
+		<i class="fa fa-pause-circle" aria-hidden="true" id="stop"></i>
+		<i class="fa fa-forward" aria-hidden="true" id="fwd"></i>
+		<i class="fa fa-random" aria-hidden="true" id="shuf"></i>
+		<i class="fa fa-search-plus" aria-hidden="true" id="add"></i>
+			
 	</div>
 	
 	<div>
 
-		<audio id="playa" controls="controls">
+		<audio id="playa">
 			
 			 <source id="song" src="" type="audio/mp3">
 		</audio>	
 
+
 	</div>
 
-	
+</div>	
 <script src="https://connect.soundcloud.com/sdk/sdk-3.1.2.js"></script>
 <script type="text/javascript" src="controls.js"></script>
 </body>
