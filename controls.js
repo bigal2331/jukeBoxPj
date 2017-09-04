@@ -51,8 +51,8 @@ function JukeBox(audioObj) {
 		this.songList.push(songObj);
 					
 		let songId = this.songList.indexOf(songObj);
-		albumArt.innerHTML += `<img class="artWork" src=${songObj.artWorkUrl}>`
-		list.innerHTML += `<li id=${songId}>${songObj.title || this.songList[songId]}</li>`;
+		albumArt.innerHTML += `<img id=${songId} class="artWork" src=${songObj.artWorkUrl}>`
+		// list.innerHTML += `<li id=${songId}>${songObj.title || this.songList[songId]}</li>`;
 		
 	};
 	
@@ -175,9 +175,10 @@ btns.addEventListener('click', function(event) {
 })
 
   
-list.addEventListener('click', function(){
+albumArt.addEventListener('click', function(){
 
 	let song = event.target.id;
+	console.log('this is my the clicked album', song)
 	
 	// myJukeBox.audioObj.src = myJukeBox.songList[song];
 	myJukeBox.play(song);
