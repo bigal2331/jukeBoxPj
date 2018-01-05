@@ -82,5 +82,18 @@ h1 {
 	margin-top: 10px;
 	border-radius: 10px;
 	width: 20%;
+	height: 150px;
 	
+	
+}
+
+.blackOut{
+	border: 2px solid #1a284c;
+	color: white;
+	background-color: black;
+	margin-left: 3.25%;
+	margin-top: 10px;
+	border-radius: 10px;
+	width: 20%;
+	height: 150px;
 }

@@ -1,6 +1,6 @@
 
 SC.initialize({
-  client_id: 'fd4e76fc67798bfa742089ed619084a6'
+  client_id: '99859bbbc016945344ec5ba5731400b4'
 });
 let audio = document.getElementById("playa");  
 let list = document.getElementById("playlist");
@@ -52,7 +52,7 @@ function JukeBox(audioObj) {
 					
 		let songId = this.songList.indexOf(songObj);
 		albumArt.innerHTML += `<img id=${songId} class="artWork" src=${songObj.artWorkUrl}>`
-		// list.innerHTML += `<li id=${songId}>${songObj.title || this.songList[songId]}</li>`;
+		
 		
 	};
 	
@@ -176,13 +176,15 @@ btns.addEventListener('click', function(event) {
 
   
 albumArt.addEventListener('click', function(){
-
 	let song = event.target.id;
-	console.log('this is my the clicked album', song)
+	if(song !== "albumArt"){
+		console.log('this is my the clicked album', song)
 	
 	// myJukeBox.audioObj.src = myJukeBox.songList[song];
-	myJukeBox.play(song);
+		myJukeBox.play(song);
+	}
 
 })
+
 
 
