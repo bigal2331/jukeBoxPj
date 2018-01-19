@@ -1,6 +1,6 @@
 
 SC.initialize({
-  client_id: '99859bbbc016945344ec5ba5731400b4'
+  client_id: '0323a0c847ffd729bf9fcb6baabeecd1'
 });
 let audio = document.getElementById("playa");  
 let list = document.getElementById("playlist");
@@ -51,10 +51,13 @@ function JukeBox(audioObj) {
 		this.songList.push(songObj);
 					
 		let songId = this.songList.indexOf(songObj);
-		albumArt.innerHTML += `<img id=${songId} class="artWork" src=${songObj.artWorkUrl}>`
+		albumArt.innerHTML += `<img id=${songId} class="artWork" src=${songObj.artWorkUrl}> 
+		<p>Title: <a href=${songObj.link}>${songObj.title}</a></p>
+		<p>Genre: ${songObj.genre}</p>
+		<p>Description: ${songObj.des}</p>
 		
 		
-	};
+		`};
 	
 }
 
@@ -126,7 +129,17 @@ JukeBox.prototype.addSCSong = function(songName){
 	.then(function(songObj) {
 			SC.stream('/tracks/' + songObj[0].id)
 			.then(function(player){
-				this.load({title: songObj[0].title, id: songObj[0].id, scPlayer: player, artWorkUrl: songObj[0].artwork_url});
+				console.log('this is the player', songObj[0])
+				this.load(
+					{
+						title: songObj[0].title, 
+						id: songObj[0].id, 
+						scPlayer: player, 
+						artWorkUrl: songObj[0].artwork_url, 
+						genre: songObj[0].genre,
+						link: songObj[0].permalink_url,
+						des: songObj[0].description,
+				});
 			}.bind(this))
 	}.bind(this));		
 };
