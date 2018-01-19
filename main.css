@@ -1,8 +1,99 @@
+body {
+	/*background-image: src("https://vignette4.wikia.nocookie.net/phobia/images/4/4a/Music.jpg/revision/latest?cb=20161125165051")*/
+
+	font-family: 'Montserrat', 'Avenir';
+	font-weight: normal;
+	/*background-color: #f2f2f2;*/
+	/*background: #383f49;	*/
+	background: #1a284c;
+	color: #1a284c;
+	margin: 0;
+}
+p{
+	margin: auto 0;
+	padding: 0 auto;
+}
+#container, header{
+	text-align: center;
+	
+}
+
+
 #playlist li {
-	margin-top: 8px;
-	margin-bottom: 8px;
+
+	/*width: 70%;	*/
+	margin: 10px 40%;
+	padding-top: 3px;
+	padding-bottom: 3px;	
+	border: 1.5px solid steelblue;
+	width: 10em;
+	border-radius: 15px;
+	background-color: white;
+	color: #1a284c;
+	list-style: decimal inside;
+
+}
+
+h1 i{
+	color: #1a284c;
+	
+}
+h1 {
+	display:inline-block;
+	color: #1a284c;	
+	margin: 0;
+	padding-top: 20px;
+	border-bottom-color: white;
+	border-bottom-width: 15px;
+	border-bottom-style: solid;
+	background-color: rgb(57, 205, 139);
+	height: 90px;
+	width: 100%;	
+	font-weight: 700;
+	font-size: 60px;
 }
 
 #btns {
-	margin: 20px auto;
+	background-color: white;
+	opacity: .78;
+	color: #1a284c;	
+	padding-bottom: 5px;	
+	margin: 10px auto;
+	font-size: 35px;
+	border: 2px solid #1a284c;
+	width: 25%;
+	border-radius: 25px;
+}
+#albumArt {
+	background-color: white;
+	opacity: .78;
+	color: #1a284c;
+	max-width: 800px;
+	margin: 10px auto;
+	padding: 0 auto;
+	border: 2px solid white;
+	border-radius: 10px;
+
+}
+
+.artWork{
+	border: 2px solid #1a284c;
+	margin-left: 3.25%;
+	margin-top: 10px;
+	border-radius: 10px;
+	width: 20%;
+	height: 150px;
+	
+	
+}
+
+.blackOut{
+	border: 2px solid #1a284c;
+	color: white;
+	background-color: black;
+	margin-left: 3.25%;
+	margin-top: 10px;
+	border-radius: 10px;
+	width: 20%;
+	height: 150px;
 }
